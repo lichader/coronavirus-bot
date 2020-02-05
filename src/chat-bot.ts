@@ -1,5 +1,6 @@
 import { Wechaty, log, Contact } from 'wechaty'
 import QrcodeTerminal from 'qrcode-terminal'
+import {Request} from "request"
 
 
 const bot = Wechaty.instance()
@@ -38,23 +39,26 @@ async function main() {
 
     log.info('Bot', 'warm up complete. Start second time looking up')
 
+    const roomName = process.env.ROOM_NAME
+    log.info('Bot', `Search ${roomName}`)
+
     const roomList = await bot.Room.findAll()
     log.info('Bot', 'Found %d rooms\n', roomList.length)
-
 
     for (let i = 0; i < roomList.length; i++) {
         const room = roomList[i]
         const topic = await room.topic()
 
-        if (topic.includes("羊毛群")){
-            log.info('Bot', 'found it')
+        if (topic.includes(roomName)){
+            log.info('Bot', `found the room ${room.id}`)
+
+            log.info('Bot', 'Start getting numbers')
+            
             // room.say("Hello")
         }
-
-        log.info('Bot', ` id: ${room.id} and topic: ${topic}`)
     }
 
-    const SLEEP = 7
+    const SLEEP = parseInt(process.env.INTERVAL)
     log.info('Bot', 'I will re-dump contact weixin id & names after %d second... ', SLEEP)
     setTimeout(main, SLEEP * 1000)
 
