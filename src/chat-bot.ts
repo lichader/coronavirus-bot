@@ -56,9 +56,6 @@ async function main() {
             let response = await axios.get('https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5')
             let numbers = JSON.parse(response.data.data)
             
-            console.log(numbers)
-            // room.say("Hello")
-
             let totalConfirm = numbers.chinaTotal.confirm
             let totalDead = numbers.chinaTotal.dead
             let totalHeal = numbers.chinaTotal.heal
@@ -85,7 +82,6 @@ async function main() {
                 console.log(todayAustralia)
                 room.say(todayAustralia)
             }
-
 
         }
     }
