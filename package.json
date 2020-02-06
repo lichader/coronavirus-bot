@@ -19,6 +19,7 @@
   "homepage": "https://github.com/lichader/coronavirus-bot#readme",
   "dependencies": {
     "@types/node": "^13.5.1",
+    "axios": "^0.19.2",
     "qrcode-terminal": "^0.12.0",
     "wechaty": "^0.28.3"
   },

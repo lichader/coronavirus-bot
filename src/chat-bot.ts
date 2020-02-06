@@ -1,6 +1,5 @@
 import { Wechaty, log, Contact } from 'wechaty'
 import QrcodeTerminal from 'qrcode-terminal'
-import {Request} from "request"
 
 
 const bot = Wechaty.instance()
