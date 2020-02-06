@@ -1,5 +1,5 @@
 import { Wechaty, log, Contact } from 'wechaty'
-import QrcodeTerminal from 'qrcode-terminal'
+import axios from 'axios'
 
 
 const bot = Wechaty.instance()
@@ -52,12 +52,45 @@ async function main() {
             log.info('Bot', `found the room ${room.id}`)
 
             log.info('Bot', 'Start getting numbers')
+
+            let response = await axios.get('https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5')
+            let numbers = JSON.parse(response.data.data)
             
+            console.log(numbers)
             // room.say("Hello")
+
+            let totalConfirm = numbers.chinaTotal.confirm
+            let totalDead = numbers.chinaTotal.dead
+            let totalHeal = numbers.chinaTotal.heal
+
+            let todayChina = `中国确诊：${totalConfirm}
+死亡：${totalDead}
+治愈：${totalHeal}
+时间：${numbers.lastUpdateTime}`
+
+            console.log(todayChina)
+            room.say(todayChina)
+
+            let australia = numbers.areaTree.find(item => item.name === "澳大利亚")
+
+            if (australia) {
+                let ausConfirm = australia.total.confirm
+                let ausDead = australia.total.dead
+                let ausHeal = australia.total.heal
+
+                let todayAustralia = `澳洲确诊：${ausConfirm}
+死亡：${ausDead}
+治愈：${ausHeal}`
+
+                console.log(todayAustralia)
+                room.say(todayAustralia)
+            }
+
+
         }
     }
 
-    const SLEEP = parseInt(process.env.INTERVAL)
+    const SLEEP = parseInt(process.env.MESSAGE_INTERVAL)
     log.info('Bot', 'I will re-dump contact weixin id & names after %d second... ', SLEEP)
     setTimeout(main, SLEEP * 1000)
 
